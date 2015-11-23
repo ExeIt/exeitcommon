@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 
 namespace EXE_IT.Common.Data
 {
@@ -9,6 +10,23 @@ namespace EXE_IT.Common.Data
     public static class SqlDataReaderUtil
     {
         #region IDataReader versions
+
+        public static byte[] GetBytes(IDataReader reader, int ordinal)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                byte[] buff = new byte[8192];
+                long offset = 0L;
+                long n = 0L;
+                do
+                {
+                    n = reader.GetBytes(ordinal, offset, buff, 0, buff.Length);
+                    ms.Write(buff, 0, (int)n);
+                    offset += n;
+                } while (n >= buff.Length);
+                return ms.ToArray();
+            }
+        }
 
         /// <summary>
         /// Gets a string from a <see cref="IDataReader"/>.
