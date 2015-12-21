@@ -11,6 +11,7 @@ namespace EXE_IT.Common.Data
     {
         #region IDataReader versions
 
+        // added for the image upload in the DSFRS project
         public static byte[] GetBytes(IDataReader reader, int ordinal)
         {
             using (MemoryStream ms = new MemoryStream())
